@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.Vote_ssm.web.sys_question.mapper.SysQuestionMapper">
+<!--  解决实体类和数据库字段不同，形成映射-->
+    <resultMap id="sysQuestionMap" type="com.example.Vote_ssm.web.sys_question.entity.SysQuestion">
+        <id property="questionId" column="question_id"></id>
+        <result property="questionTitle" column="question_title"></result>
+        <result property="questionDesc" column="question_desc"></result>
+        <result property="questionImg" column="question_img"></result>
+        <result property="questionOrder" column="question_order"></result>
+        <result property="questionStatus" column="question_status"></result>
+    </resultMap>
+<!-- 新增问卷-->
+
+ <insert id="addQuestion" parameterType="com.example.Vote_ssm.web.sys_question.entity.SysQuestion">
+    insert into ssm_question(question_title,question_desc,question_img,question_order,question_status)
+    values (#{sysQuestion.questionTitle},#{sysQuestion.questionDesc},#{sysQuestion.questionImg},
+            #{sysQuestion.questionOrder},#{sysQuestion.questionStatus})
+ </insert>
+<!--表格查询-->
+<select id="getTableList" resultMap="sysQuestionMap">
+   select  * from ssm_question
+    where 1=1
+    <if test="questionTitle != null and questionTitle != ''">
+        and question_title like concat('%',#{questionTitle},'%')
+    </if>
+</select>
+
+    <select id="getById" resultMap="sysQuestionMap">
+        select * from ssm_question where question_id = #{questionId}
+
+    </select>
+
+    <delete id="deleteQuestion">
+        delete from ssm_question where question_id = #{questionId}
+    </delete>
+
+    <update id="editQuestion">
+        update ssm_question
+        <set>
+        <if test="sysQuestion.questionTitle != null and sysQuestion.questionTitle != ''">
+            question_title=#{sysQuestion.questionTitle},
+        </if>
+            <if test="sysQuestion.questionDesc != null and sysQuestion.questionDesc != ''">
+                question_desc=#{sysQuestion.questionDesc},
+            </if>
+            <if test="sysQuestion.questionImg != null and sysQuestion.questionImg != ''">
+                question_img=#{sysQuestion.questionImg},
+            </if>
+            <if test="sysQuestion.questionOrder != null and sysQuestion.questionOrder != ''">
+                question_order=#{sysQuestion.questionOrder},
+            </if>
+            <if test="sysQuestion.questionStatus != null and sysQuestion.questionStatus != ''">
+                question_status=#{sysQuestion.questionStatus},
+            </if>
+        </set>
+        where question_id = #{sysQuestion.questionId}
+    </update>
+
+
+    <!--我的问卷查询-->
+    <select id="getMyList" resultMap="sysQuestionMap">
+        select  sq.* from ssm_question as sq,answer_question as aq
+        where aq.question_id = sq.question_id
+        <if test="questionTitle != null and questionTitle != ''">
+            and question_title like concat('%',#{questionTitle},'%')
+        </if>
+        and aq.user_id = #{userId}
+    </select>
+
+
+
+
+
+</mapper>

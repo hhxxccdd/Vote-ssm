@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.Vote_ssm.web.answer_paper_choice.mapper.AnswerPaperChoiceMapper">
+    <!--  解决实体类和数据库字段不同，形成映射-->
+    <resultMap id="answerPaperMap" type="com.example.Vote_ssm.web.answer_paper_choice.entity.AnswerPaperChoice">
+        <id property="answerChoiceId" column="answer_choice_id"></id>
+        <result property="choiceId" column="choice_id"></result>
+        <result property="paperId" column="paper_id"></result>
+        <result property="userId" column="user_id"></result>
+    </resultMap>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into answer_paper_choice(choice_id,paper_id,user_id)
+        values
+        <foreach collection="list" item="choice" separator=",">
+            (#{choice.choiceId},#{choice.paperId},#{choice.userId})
+        </foreach>
+
+    </insert>
+
+</mapper>
