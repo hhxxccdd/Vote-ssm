@@ -56,10 +56,11 @@
             <mvc:mapping path="/api/**" />
             <!-- 需排除拦截的地址 -->
             <mvc:exclude-mapping path="/api/sysUser/register"/>
-            <mvc:exclude-mapping path="/api/sysUser/login"/>
+            <mvc:exclude-mapping path="/api/sysUser/Login"/>
             <mvc:exclude-mapping path="/api/sys/captcha"/>
             <mvc:exclude-mapping path="/api/sysUser/loginCommit"/>
             <bean class="com.example.Vote_ssm.interceptor.LoginInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
+
 </beans>

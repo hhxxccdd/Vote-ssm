@@ -216,9 +216,10 @@ public class SysUserController {
         BeanUtils.copyProperties(loginParm,sysUser);
         SysUser login = sysUserService.login(sysUser);
         if(login != null){
+            session.setAttribute("user",login);
             return ResultUtils.success("登录成功",login.getUserId());
         }
-        session.setAttribute("user",login);
+
         return ResultUtils.error("用户名或密码错误");
     }
 
